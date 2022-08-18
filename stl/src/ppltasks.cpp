@@ -103,6 +103,7 @@ namespace Concurrency {
                 if (m_causalityAPIs) {
                     APTTYPE aptType;
                     APTTYPEQUALIFIER aptTypeQualifier;
+                    // NON-XP COMPATIBLE
                     if (CoGetApartmentType(&aptType, &aptTypeQualifier) == S_OK) {
                         // Release causality APIs only if current apartment is still RoInitialized
                         m_causalityAPIs->Release();
@@ -268,6 +269,7 @@ namespace Concurrency {
             APTTYPE _AptType;
             APTTYPEQUALIFIER _AptTypeQualifier;
 
+            // NON-XP COMPATIBLE
             HRESULT hr = CoGetApartmentType(&_AptType, &_AptTypeQualifier);
             if (SUCCEEDED(hr)) {
                 // We determine the origin of a task continuation by looking at where .then is called, so we can tell
@@ -290,6 +292,7 @@ namespace Concurrency {
             APTTYPE _AptType;
             APTTYPEQUALIFIER _AptTypeQualifier;
 
+            // NON-XP COMPATIBLE
             HRESULT hr = CoGetApartmentType(&_AptType, &_AptTypeQualifier);
             //
             // If it failed, it's not a Windows Runtime/COM initialized thread. This is not a failure.

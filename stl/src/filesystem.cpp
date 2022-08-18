@@ -117,6 +117,7 @@ namespace {
         const HANDLE _Handle, long long* const _Last_write_filetime) {
         // read the last write time from _Handle and store it in _Last_write_filetime
         FILE_BASIC_INFO _Ex_info;
+        // NON-XP COMPATIBLE: FileExtd.lib on Windows Server 2003 and Windows XP
         if (GetFileInformationByHandleEx(_Handle, FileBasicInfo, &_Ex_info, sizeof(_Ex_info))) {
             *_Last_write_filetime = _Ex_info.LastWriteTime.QuadPart;
             return __std_win_error::_Success;
@@ -127,6 +128,7 @@ namespace {
 
     [[nodiscard]] __std_win_error __stdcall _Get_file_id_by_handle(
         const HANDLE _Handle, _Out_ FILE_ID_INFO* const _Id) noexcept {
+        // NON-XP COMPATIBLE: FileExtd.lib on Windows Server 2003 and Windows XP
         if (GetFileInformationByHandleEx(_Handle, FileIdInfo, _Id, sizeof(*_Id))) {
             // if we could get FILE_ID_INFO, use that as the source of truth
             return __std_win_error::_Success;
@@ -223,6 +225,7 @@ void __stdcall __std_fs_close_handle(const __std_fs_file_handle _Handle) noexcep
     const HANDLE _As_plain_handle = reinterpret_cast<HANDLE>(_Handle);
 
     FILE_BASIC_INFO _Ex_info;
+    // NON-XP COMPATIBLE: FileExtd.lib on Windows Server 2003 and Windows XP
     if (GetFileInformationByHandleEx(_As_plain_handle, FileBasicInfo, &_Ex_info, sizeof(_Ex_info))) {
         *_File_attributes = _Ex_info.FileAttributes;
         return __std_win_error::_Success;
@@ -235,6 +238,7 @@ void __stdcall __std_fs_close_handle(const __std_fs_file_handle _Handle) noexcep
     _In_ const __std_fs_file_handle _Handle, _Out_writes_z_(_Target_size) wchar_t* const _Target,
     _In_ const unsigned long _Target_size,
     _In_ const __std_fs_volume_name_kind _Flags) noexcept { // calls GetFinalPathNameByHandleW
+    // NON-XP COMPATIBLE
     const auto _Result = GetFinalPathNameByHandleW(
         reinterpret_cast<HANDLE>(_Handle), _Target, _Target_size, static_cast<unsigned long>(_Flags));
     return {_Result, _Result == 0 ? __std_win_error{GetLastError()} : __std_win_error::_Success};
@@ -606,6 +610,7 @@ _Success_(return == __std_win_error::_Success) __std_win_error
     if (_Last_error == __std_win_error::_Access_denied && _Able_to_change_attributes) {
 
         FILE_BASIC_INFO _Basic_info;
+        // NON-XP COMPATIBLE: FileExtd.lib on Windows Server 2003 and Windows XP
         if (!GetFileInformationByHandleEx(_Handle._Get(), FileBasicInfo, &_Basic_info, sizeof(_Basic_info))) {
             return {false, __std_win_error{GetLastError()}};
         }
@@ -658,6 +663,7 @@ _Success_(return == __std_win_error::_Success) __std_win_error
         }
 
         FILE_BASIC_INFO _Basic_info;
+        // NON-XP COMPATIBLE: FileExtd.lib on Windows Server 2003 and Windows XP
         if (!GetFileInformationByHandleEx(_Handle._Get(), FileBasicInfo, &_Basic_info, sizeof(_Basic_info))) {
             return __std_win_error{GetLastError()};
         }
@@ -927,6 +933,7 @@ namespace {
 
     if (_STD _Bitmask_includes_any(_Flags, _Basic_info_data | __std_fs_stats_flags::_Reparse_tag)) {
         FILE_BASIC_INFO _Info;
+        // NON-XP COMPATIBLE: FileExtd.lib on Windows Server 2003 and Windows XP
         if (!GetFileInformationByHandleEx(_Handle._Get(), FileBasicInfo, &_Info, sizeof(_Info))) {
             return __std_win_error{GetLastError()};
         }
@@ -939,6 +946,7 @@ namespace {
             // ERROR_INVALID_PARAMETER. We avoid calling this for non-reparse-points.
             if ((_Info.FileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) != 0u) {
                 FILE_ATTRIBUTE_TAG_INFO _TagInfo;
+                // NON-XP COMPATIBLE: FileExtd.lib on Windows Server 2003 and Windows XP
                 if (!GetFileInformationByHandleEx(_Handle._Get(), FileAttributeTagInfo, &_TagInfo, sizeof(_TagInfo))) {
                     return __std_win_error{GetLastError()};
                 }
@@ -953,6 +961,7 @@ namespace {
 
     if (_STD _Bitmask_includes_any(_Flags, _Standard_info_data)) {
         FILE_STANDARD_INFO _Info;
+        // NON-XP COMPATIBLE: FileExtd.lib on Windows Server 2003 and Windows XP
         if (!GetFileInformationByHandleEx(_Handle._Get(), FileStandardInfo, &_Info, sizeof(_Info))) {
             return __std_win_error{GetLastError()};
         }

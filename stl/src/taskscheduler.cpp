@@ -125,6 +125,7 @@ namespace Concurrency {
                         reinterpret_cast<LPCWSTR>(_Chore->_M_callback));
 
                     if (_Callback_dll != nullptr) {
+                        // NON-XP COMPATIBLE
                         FreeLibraryWhenCallbackReturns(_Pci, _Callback_dll);
                     }
                 }
@@ -136,6 +137,7 @@ namespace Concurrency {
 
         _CRTIMP2 void __cdecl _Release_chore(_Threadpool_chore* _Chore) {
             if (_Chore->_M_work != nullptr) {
+                // NON-XP COMPATIBLE
                 CloseThreadpoolWork(static_cast<PTP_WORK>(_Chore->_M_work));
                 _Chore->_M_work = nullptr;
             }
@@ -151,6 +153,7 @@ namespace Concurrency {
                     GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, reinterpret_cast<LPCWSTR>(_Chore->_M_callback));
             }
 
+            // NON-XP COMPATIBLE
             SubmitThreadpoolWork(static_cast<PTP_WORK>(_Chore->_M_work));
             return 0;
         }
@@ -159,6 +162,7 @@ namespace Concurrency {
             _ASSERT(_Chore->_M_work == nullptr);
             _ASSERT(_Chore->_M_callback != nullptr);
 
+            // NON-XP COMPATIBLE
             _Chore->_M_work = CreateThreadpoolWork(_Task_scheduler_callback, _Chore, nullptr);
 
             if (_Chore->_M_work) {

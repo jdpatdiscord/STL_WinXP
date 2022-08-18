@@ -41,5 +41,6 @@ extern "C" int __cdecl __crtCompareStringW(_In_z_ LPCWSTR LocaleName, _In_ DWORD
         return (cchCount1 - cchCount2 == 0) ? 2 : (cchCount1 - cchCount2 < 0) ? 1 : 3;
     }
 
+    // NON-XP COMPATIBLE
     return CompareStringEx(LocaleName, dwCmpFlags, lpString1, cchCount1, lpString2, cchCount2, nullptr, nullptr, 0);
 }

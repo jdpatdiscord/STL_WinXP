@@ -70,6 +70,7 @@ extern "C" int __cdecl __crtLCMapStringA(_In_opt_z_ LPCWSTR LocaleName, _In_ DWO
     }
 
     // get size required for string mapping
+    // NON-XP COMPATIBLE
     int retval = LCMapStringEx(LocaleName, dwMapFlags, inwbuffer.get(), inbuff_size, nullptr, 0, nullptr, nullptr, 0);
     if (0 == retval) {
         return 0;
@@ -84,6 +85,7 @@ extern "C" int __cdecl __crtLCMapStringA(_In_opt_z_ LPCWSTR LocaleName, _In_ DWO
 
             // do string mapping
             if (0
+                //NON-XP COMPATIBLE
                 == LCMapStringEx(LocaleName, dwMapFlags, inwbuffer.get(), inbuff_size,
                     reinterpret_cast<LPWSTR>(lpDestStr), cchDest, nullptr, nullptr, 0)) {
                 return retval;
@@ -102,6 +104,7 @@ extern "C" int __cdecl __crtLCMapStringA(_In_opt_z_ LPCWSTR LocaleName, _In_ DWO
 
         // do string mapping
         if (0
+            // NON-XP COMPATIBLE
             == LCMapStringEx(LocaleName, dwMapFlags, inwbuffer.get(), inbuff_size, outwbuffer.get(), outbuff_size,
                 nullptr, nullptr, 0)) {
             return retval;

@@ -37,10 +37,12 @@ namespace {
     class [[nodiscard]] dbg_eng_data {
     public:
         dbg_eng_data() noexcept {
+            // NON-XP COMPATIBLE
             AcquireSRWLockExclusive(&srw);
         }
 
         ~dbg_eng_data() {
+            // NON-XP COMPATIBLE
             ReleaseSRWLockExclusive(&srw);
         }
 

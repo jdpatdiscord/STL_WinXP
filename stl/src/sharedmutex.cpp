@@ -18,26 +18,32 @@ static_assert(sizeof(_Smtx_t) == sizeof(SRWLOCK), "_Smtx_t must be the same size
 static_assert(alignof(_Smtx_t) == alignof(SRWLOCK), "_Smtx_t must be the same alignment as SRWLOCK.");
 
 void __cdecl _Smtx_lock_exclusive(_Smtx_t* smtx) { // lock shared mutex exclusively
+    // NON-XP COMPATIBLE
     AcquireSRWLockExclusive(reinterpret_cast<PSRWLOCK>(smtx));
 }
 
 void __cdecl _Smtx_lock_shared(_Smtx_t* smtx) { // lock shared mutex non-exclusively
+    // NON-XP COMPATIBLE
     AcquireSRWLockShared(reinterpret_cast<PSRWLOCK>(smtx));
 }
 
 int __cdecl _Smtx_try_lock_exclusive(_Smtx_t* smtx) { // try to lock shared mutex exclusively
+    // NON-XP COMPATIBLE
     return TryAcquireSRWLockExclusive(reinterpret_cast<PSRWLOCK>(smtx));
 }
 
 int __cdecl _Smtx_try_lock_shared(_Smtx_t* smtx) { // try to lock shared mutex non-exclusively
+    // NON-XP COMPATIBLE
     return TryAcquireSRWLockShared(reinterpret_cast<PSRWLOCK>(smtx));
 }
 
 void __cdecl _Smtx_unlock_exclusive(_Smtx_t* smtx) { // unlock exclusive shared mutex
+    // NON-XP COMPATIBLE
     ReleaseSRWLockExclusive(reinterpret_cast<PSRWLOCK>(smtx));
 }
 
 void __cdecl _Smtx_unlock_shared(_Smtx_t* smtx) { // unlock non-exclusive shared mutex
+    // NON-XP COMPATIBLE
     ReleaseSRWLockShared(reinterpret_cast<PSRWLOCK>(smtx));
 }
 }

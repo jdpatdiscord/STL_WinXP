@@ -36,6 +36,7 @@ _NODISCARD unsigned int __stdcall __std_parallel_algorithms_hw_threads() noexcep
 
 _NODISCARD PTP_WORK __stdcall __std_create_threadpool_work(
     PTP_WORK_CALLBACK _Callback, void* _Context, PTP_CALLBACK_ENVIRON _Callback_environ) noexcept {
+    // NON-XP COMPATIBLE
     return CreateThreadpoolWork(_Callback, _Context, _Callback_environ);
 }
 
@@ -45,15 +46,18 @@ void __stdcall __std_submit_threadpool_work(PTP_WORK _Work) noexcept {
 
 void __stdcall __std_bulk_submit_threadpool_work(PTP_WORK _Work, const size_t _Submissions) noexcept {
     for (size_t _Idx = 0; _Idx < _Submissions; ++_Idx) {
+        // NON-XP COMPATIBLE
         SubmitThreadpoolWork(_Work);
     }
 }
 
 void __stdcall __std_close_threadpool_work(PTP_WORK _Work) noexcept {
+    // NON-XP COMPATIBLE
     CloseThreadpoolWork(_Work);
 }
 
 void __stdcall __std_wait_for_threadpool_work_callbacks(PTP_WORK _Work, BOOL _Cancel) noexcept {
+    // NON-XP COMPATIBLE
     WaitForThreadpoolWorkCallbacks(_Work, _Cancel);
 }
 

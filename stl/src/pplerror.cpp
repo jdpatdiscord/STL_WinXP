@@ -28,6 +28,7 @@ namespace Concurrency {
                         auto restrictedInfo(static_cast<IRestrictedErrorInfo*>(info->restrictedInfo));
                         if (restrictedInfo != nullptr) {
 #ifndef _M_ARM64 // CRT_REFACTOR TODO
+                            // NON-XP COMPATIBLE
                             ::RoReportUnhandledError(restrictedInfo);
 #endif // _M_ARM64
 
@@ -35,6 +36,7 @@ namespace Concurrency {
                             // to make sure that RoFailFastWithErrorContext can extract the information
                             ::SetRestrictedErrorInfo(restrictedInfo);
                         }
+                        // NON-XP COMPATIBLE
                         ::RoFailFastWithErrorContext(info->hr);
                     }
                 }

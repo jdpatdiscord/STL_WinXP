@@ -44,10 +44,12 @@ namespace {
     class _NODISCARD _SrwLock_guard {
     public:
         explicit _SrwLock_guard(SRWLOCK& _Locked_) noexcept : _Locked(&_Locked_) {
+            // NON-XP COMPATIBLE
             AcquireSRWLockExclusive(_Locked);
         }
 
         ~_SrwLock_guard() {
+            // NON-XP COMPATIBLE
             ReleaseSRWLockExclusive(_Locked);
         }
 
@@ -137,6 +139,7 @@ namespace {
 
         _Level = __std_atomic_api_level::__has_srwlock;
 
+        // NON-XP COMPATIBLE
         const HMODULE _Sync_module = GetModuleHandleW(L"api-ms-win-core-synch-l1-2-0.dll");
         if (_Sync_module != nullptr) {
             const auto _Wait_on_address =
@@ -275,6 +278,7 @@ void __stdcall __std_atomic_notify_one_indirect(const void* const _Storage) noex
     for (; _Context != &_Entry._Wait_list_head; _Context = _Context->_Next) {
         if (_Context->_Storage == _Storage) {
             // Can't move wake outside SRWLOCKed section: SRWLOCK also protects the _Context itself
+            // NON-XP COMPATIBLE
             WakeAllConditionVariable(&_Context->_Condition);
             break;
         }
@@ -293,6 +297,7 @@ void __stdcall __std_atomic_notify_all_indirect(const void* const _Storage) noex
     for (; _Context != &_Entry._Wait_list_head; _Context = _Context->_Next) {
         if (_Context->_Storage == _Storage) {
             // Can't move wake outside SRWLOCKed section: SRWLOCK also protects the _Context itself
+            // NON-XP COMPATIBLE
             WakeAllConditionVariable(&_Context->_Condition);
         }
     }
@@ -315,6 +320,7 @@ int __stdcall __std_atomic_wait_indirect(const void* _Storage, void* _Comparand,
             return TRUE;
         }
 
+        // NON-XP COMPATIBLE
         if (!SleepConditionVariableSRW(&_Context._Condition, &_Entry._Lock, _Remaining_timeout, 0)) {
             _Assume_timeout();
             return FALSE;
@@ -331,6 +337,7 @@ unsigned long long __stdcall __std_atomic_wait_get_deadline(const unsigned long 
     if (_Timeout == _Atomic_wait_no_deadline) {
         return _Atomic_wait_no_deadline;
     } else {
+        // NON-XP COMPATIBLE
         return GetTickCount64() + _Timeout;
     }
 }

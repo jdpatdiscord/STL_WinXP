@@ -146,6 +146,7 @@ extern "C" int __cdecl __crtCompareStringA(_In_z_ LPCWSTR LocaleName, _In_ DWORD
         return 0;
     }
 
+    // NON-XP COMPATIBLE
     return CompareStringEx(
         LocaleName, dwCmpFlags, wbuffer1.get(), buff_size1, wbuffer2.get(), buff_size2, nullptr, nullptr, 0);
 }

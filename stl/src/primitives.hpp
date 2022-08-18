@@ -31,6 +31,7 @@ namespace Concurrency {
         class stl_critical_section_win7 final : public stl_critical_section_interface {
         public:
             stl_critical_section_win7() {
+                // NON-XP COMPATIBLE
                 InitializeSRWLock(&m_srw_lock);
             }
 
@@ -41,10 +42,12 @@ namespace Concurrency {
             void destroy() override {}
 
             void lock() override {
+                // NON-XP COMPATIBLE
                 AcquireSRWLockExclusive(&m_srw_lock);
             }
 
             bool try_lock() override {
+                // NON-XP COMPATIBLE
                 return TryAcquireSRWLockExclusive(&m_srw_lock) != 0;
             }
 
@@ -54,6 +57,7 @@ namespace Concurrency {
             }
 
             void unlock() override {
+                // NON-XP COMPATIBLE
                 ReleaseSRWLockExclusive(&m_srw_lock);
             }
 
@@ -68,6 +72,7 @@ namespace Concurrency {
         class stl_condition_variable_win7 final : public stl_condition_variable_interface {
         public:
             stl_condition_variable_win7() {
+                // NON-XP COMPATIBLE
                 InitializeConditionVariable(&m_condition_variable);
             }
 
@@ -84,16 +89,19 @@ namespace Concurrency {
             }
 
             bool wait_for(stl_critical_section_interface* lock, unsigned int timeout) override {
+                // NON-XP COMPATIBLE
                 return SleepConditionVariableSRW(&m_condition_variable,
                            static_cast<stl_critical_section_win7*>(lock)->native_handle(), timeout, 0)
                     != 0;
             }
 
             void notify_one() override {
+                // NON-XP COMPATIBLE
                 WakeConditionVariable(&m_condition_variable);
             }
 
             void notify_all() override {
+                // NON-XP COMPATIBLE
                 WakeAllConditionVariable(&m_condition_variable);
             }
 
