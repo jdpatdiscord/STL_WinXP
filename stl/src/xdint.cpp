@@ -39,17 +39,13 @@ short _Dint(double* px, short xexp) { // test and drop (scaled) fraction bits
         xchar >>= 4;
         frac &= ps->_Sh[sub[xchar]];
         ps->_Sh[sub[xchar]] ^= frac;
-        switch (xchar) { // cascade through!
-        case 3:
-            frac |= ps->_Sh[_D1];
-            ps->_Sh[_D1] = 0;
-        case 2:
-            frac |= ps->_Sh[_D2];
-            ps->_Sh[_D2] = 0;
-        case 1:
-            frac |= ps->_Sh[_D3];
-            ps->_Sh[_D3] = 0;
+
+        if (xchar >= 1 && xchar <= 3)
+        {
+            frac |= ps->_Sh[xchar - 1];
+            ps->_Sh[xchar - 1] = 0;
         }
+
         return frac != 0 ? _FINITE : 0;
     }
 }

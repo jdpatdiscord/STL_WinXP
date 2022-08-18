@@ -12,6 +12,7 @@ _EXTERN_C_UNLESS_PURE
 // Win32 critical sections are recursive
 
 void __CLRCALL_PURE_OR_CDECL _Mtxinit(_Rmtx* _Mtx) noexcept { // initialize mutex
+    // NON-XP COMPATIBLE
     InitializeCriticalSectionEx(_Mtx, 4000, 0);
 }
 

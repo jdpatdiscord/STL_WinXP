@@ -32,6 +32,7 @@ _CRTIMP2_PURE int __CLRCALL_PURE_OR_CDECL _Execute_once(
         return static_cast<BOOL>(_Trampoline_parameter->_Callback(_InitOnce, _Trampoline_parameter->_Pv, _Context));
     };
 
+    // NON-XP COMPATIBLE
     return InitOnceExecuteOnce(
         reinterpret_cast<PINIT_ONCE>(&_Flag._Opaque), _Xfg_trampoline, &_Trampoline_parameter, nullptr);
 }

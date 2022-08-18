@@ -10,6 +10,8 @@
 
 #include "xmtx.hpp"
 
+// commit note
+
 _STD_BEGIN
 
 constexpr int _Max_lock = 8; // must be power of two

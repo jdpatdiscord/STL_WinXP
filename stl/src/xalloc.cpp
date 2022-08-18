@@ -14,6 +14,7 @@ namespace stdext {
 
         _CRTIMP2_PURE void __CLRCALL_PURE_OR_CDECL _Mtx_new(void*& _Ptr) {
             _Ptr = new CRITICAL_SECTION;
+            // NON-XP COMPATIBLE
             InitializeCriticalSectionEx(static_cast<CRITICAL_SECTION*>(_Ptr), 4000, 0);
         }
 

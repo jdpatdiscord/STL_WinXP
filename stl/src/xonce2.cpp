@@ -19,10 +19,12 @@ _EXTERN_C
 
 int __stdcall __std_init_once_begin_initialize_clr(
     void** _LpInitOnce, unsigned long _DwFlags, int* _FPending, void** _LpContext) noexcept {
+    // NON-XP COMPATIBLE
     return InitOnceBeginInitialize(reinterpret_cast<LPINIT_ONCE>(_LpInitOnce), _DwFlags, _FPending, _LpContext);
 }
 
 int __stdcall __std_init_once_complete_clr(void** _LpInitOnce, unsigned long _DwFlags, void* _LpContext) noexcept {
+    // NON-XP COMPATIBLE
     return InitOnceComplete(reinterpret_cast<LPINIT_ONCE>(_LpInitOnce), _DwFlags, _LpContext);
 }
 
